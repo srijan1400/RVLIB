@@ -9,6 +9,7 @@ import Results from "../screens/searchResults";
 import Reviews from "../screens/reviews";
 import Borrow from "../screens/resutsDetails";
 import Reserve from "../screens/borrow";
+import Add from "../screens/addReviews";
 
 const screens = {
     Search:
@@ -32,6 +33,14 @@ const screens = {
     Reviews:
     {
         screen:Reviews
+    },
+    Add:
+    {
+        screen : Add,
+        navigationOptions :
+        {
+            title: "Add a Review"
+        }
     },
     Reserve:
     {

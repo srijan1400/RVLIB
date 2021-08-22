@@ -1,14 +1,39 @@
-import { createStackNavigator } from "react-navigation-stack";
+import { createStackNavigator, HeaderBackButton } from "react-navigation-stack";
 import { createAppContainer } from "react-navigation";
 import React from 'react'
 import RVLIB from '../screens/home'
 import Screen from '../screens/search'
 import Reservation from '../screens/reservation'
-
+import Login from "../screens/login";
+import Loading from "../screens/loadingScreen";
+import SignUp from "../screens/signup";
 import Header from '../shared/header'
 
 
 const screens = {
+    SignUp :
+    {
+        screen: SignUp,
+        navigationOptions : {
+            headerShown:false
+        }
+    },
+    Loading:
+    {
+        screen:Loading,
+        navigationOptions :
+        {
+            headerShown:false
+        }
+    },
+    Login : 
+    {
+        screen: Login,
+        navigationOptions : {
+            headerShown : false
+        }
+
+    },
     RVLIB:
     {
         screen: RVLIB,

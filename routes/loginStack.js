@@ -3,6 +3,8 @@ import { createAppContainer } from "react-navigation";
 import React from 'react';
 import Login from "../screens/login";
 import SignUp from "../screens/signup";
+import Loading from "../screens/loadingScreen";
+import RVLIB from "../screens/home";
 const screens = {
 
     Login : 
@@ -12,6 +14,14 @@ const screens = {
             headerShown : false
         }
 
+    },
+    Loading:
+    {
+        screen:Loading,
+        navigationOptions :
+        {
+            headerShown:false
+        }
     },
     SignUp :
     {

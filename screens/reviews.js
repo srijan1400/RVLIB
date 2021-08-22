@@ -1,17 +1,29 @@
 import React from 'react'
 import { useState } from 'react';
-import { View, Text, Button, Image, StyleSheet, Pressable,  ScrollView, TouchableOpacity,  RecyclerViewBackedScrollView} from 'react-native'
-
+import { View, Text, Button, Image, Modal, StyleSheet, Pressable,  ScrollView, TouchableOpacity,  RecyclerViewBackedScrollView} from 'react-native'
+import IconMat from 'react-native-vector-icons/Entypo'
 import DropDownPicker from 'react-native-dropdown-picker';
 
-const Reviews = () =>
+
+const Reviews = ({navigation}) =>
 {
+    const [view, setView] = useState(false);
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([
     {label: 'Highest Rated', value: 'Highest Rated'},
     {label: 'Lowest Rated', value: 'Lowest Rated'}
     ]);
+
+    const handleonClick1 = () =>
+    {
+        setView(true);
+    };
+
+    const handleonClick2 = () =>
+    {
+        setView(false);
+    };
 
     const [open2, setOpen2] = useState(false);
     const [value2, setValue2] = useState(null);
@@ -23,6 +35,7 @@ const Reviews = () =>
     {label: 'BT', value: 'BT'},
     {label: 'MCH', value: 'MCH'}
   ]);
+
 
   return(
       <View style = {{alignItems:'center'}}>
@@ -43,24 +56,39 @@ const Reviews = () =>
                setItems={setItems2}
             />
             <View>
-                <Text style = {{marginTop:60, fontSize:19, marginLeft:-180}}>Srijan Devnath</Text>
+                <Text style = {{marginTop:60, fontSize:19, marginLeft:-180, textDecorationLine: 'underline'}} onPress = {handleonClick1}>Srijan Devnath</Text>
                 <Text style = {{marginTop:10, fontSize:16, marginLeft:-180}}>ISE</Text>
-                <Text style = {{marginTop:40, fontSize:19, marginLeft:-180}}>Rahul Dutta</Text>
+                <Text style = {{marginTop:40, fontSize:19, marginLeft:-180, textDecorationLine: 'underline'}}>Rahul Dutta</Text>
                 <Text style = {{marginTop:10, fontSize:16, marginLeft:-180}}>CSE</Text>
-                <Text style = {{marginTop:40, fontSize:19, marginLeft:-180}}>Shaurya Joshi</Text>
+                <Text style = {{marginTop:40, fontSize:19, marginLeft:-180, textDecorationLine: 'underline'}}>Shaurya Joshi</Text>
                 <Text style = {{marginTop:10, fontSize:16, marginLeft:-180}}>MCH</Text>
-                <Text style = {{marginTop:40, fontSize:19, marginLeft:-180}}>Mayank Agarwal</Text>
+                <Text style = {{marginTop:40, fontSize:19, marginLeft:-180, textDecorationLine: 'underline'}}>Mayank Agarwal</Text>
                 <Text style = {{marginTop:10, fontSize:16, marginLeft:-180}}>ECE</Text>
             </View>
             <View>
-                <Text style = {{marginLeft:190, fontSize:18, marginTop:-350}}>⭐   ⭐   ⭐   ⭐ </Text>
-                <Text style = {{marginLeft:190, fontSize:18, marginTop:70}}>⭐   ⭐   ⭐  </Text>
-                <Text style = {{marginLeft:190, fontSize:18, marginTop:70}}>⭐   ⭐   ⭐   ⭐</Text>
-                <Text style = {{marginLeft:190, fontSize:18, marginTop:70}}>⭐   ⭐   ⭐   ⭐  </Text>
+                <Text style = {{marginLeft:190, fontSize:18, marginTop:-365}}>⭐   ⭐   ⭐   ⭐ </Text>
+                <Text style = {{marginLeft:190, fontSize:18, marginTop:75}}>⭐   ⭐   ⭐  </Text>
+                <Text style = {{marginLeft:190, fontSize:18, marginTop:75}}>⭐   ⭐   ⭐   ⭐</Text>
+                <Text style = {{marginLeft:190, fontSize:18, marginTop:75}}>⭐   ⭐   ⭐   ⭐  </Text>
             </View>
-            <Pressable style={styles.button}>
+            <Pressable style={styles.button} onPress = {() => {
+        navigation.navigate('Add')}}>
       <Text style={styles.text}>Add Review</Text>
     </Pressable>
+    <Modal 
+    transparent = {true}
+    visible = {view}>
+        <View style = {{backgroundColor:'#000000aa', flex:1}}>
+            <View style = {{backgroundColor:'#ffffff', margin:40, padding:30, height:320, marginTop:250, borderRadius:15}}>
+            <Text style = {{fontSize:20}}>Srijan  Devnath</Text>
+            <IconMat  style = {{marginLeft:245, marginTop:-30, fontSize:25}} name = "cross" onPress = {handleonClick2}/>
+            <Text style = {{fontSize:16, marginTop:15}}>3rd Year</Text>
+            <Text style = {{fontSize:16, marginTop:10}}>ISE</Text>
+            <Text style = {{marginLeft:0, fontSize:18, marginTop:20}}>⭐   ⭐   ⭐   ⭐ </Text>
+            <Text style = {{fontSize:13, marginTop:20}}>" A really helpful reference book for understanding basic concepts of Chemistry and covers large portions of the 1st Year syllabus. Must have for exams "</Text>
+            </View>
+        </View>
+        </Modal>
       </View>
   )
 

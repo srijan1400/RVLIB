@@ -1,42 +1,72 @@
 import React from 'react'
 import { useState, setState} from 'react';
-import { View, Text, Button, Image, StyleSheet, ScrollView, Pressable, TouchableOpacity,  RecyclerViewBackedScrollView, Modal, TextInput, Linking} from 'react-native'
-import CalendarStrip from 'react-native-calendar-strip';
+import { View, Text, Button, Image, StyleSheet, ScrollView, Pressable, TouchableOpacity,  RecyclerViewBackedScrollView, Modal, TextInput, Linking, Alert} from 'react-native'
 import IconMat from 'react-native-vector-icons/AntDesign'
+import { registration } from '../API/firebaseMethods';
 
 const img = ['https://images-na.ssl-images-amazon.com/images/I/81X7SugiDdL.jpg']
 
 
 const SignUp = ({navigation}) =>
 {
-    
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const emptyState = () =>
+    {
+        setEmail('');
+        setPassword('');
+        setUsername('');
+    }
+
+    const handlePress = () => {
+        if(!username)
+        {
+            Alert.alert('Username is required')
+        }
+        else if(!email)
+        {
+            Alert.alert('Email is required')
+        }
+        else if(!password)
+        {
+            Alert.alert('Password is required')
+        }
+        else{
+            registration(
+                email,
+                password,
+                username
+            );
+            navigation.navigate('Loading');
+            emptyState();
+        }
+    };
 
     return(
         <View>
-            <Image style = {{width:70, height:100, marginTop:75, marginLeft:20}} source = {{uri : 'https://images-na.ssl-images-amazon.com/images/I/81X7SugiDdL.jpg'}} />
-            <Image style = {{width:70, height:100, marginTop:-55, marginLeft:50}} source = {{uri : 'https://bdmpublications.com/wp-content/uploads/2019/10/Python-Coding-Manual-Vol-20.jpg'}}/>
-            <Image style = {{width:70, height:100, marginTop:-50, marginLeft:30}} source = {{uri : 'https://images-na.ssl-images-amazon.com/images/I/61CVP-MfUoL.jpg'}} />
             <Text style = {styles.text0}> RVLIB</Text>
             <View style = {styles.main}>
                 <Text style = {styles.text1}> Sign Up</Text>
             </View>
             <View>
                 <Text style = {styles.text2}> Username</Text>
-                <TextInput style = {styles.input1} placeholder = "Enter a username"/>
+                <TextInput style = {styles.input1} placeholder = "Enter a username" onChangeText = {(username) => setUsername(username)}/>
                 <Text style = {styles.text2}> Email</Text>
-                <TextInput style = {styles.input1} placeholder = "Enter your email"/>
+                <TextInput style = {styles.input1} placeholder = "Enter your email" onChangeText = {(email) => setEmail(email)}/>
                 <Text style = {styles.text2}> Password</Text>
-                <TextInput style = {styles.input2} placeholder = "Enter a password" secureTextEntry = {true}/>
+                <TextInput style = {styles.input2} placeholder = "Enter a password" secureTextEntry = {true} onChangeText = {(password) => setPassword(password)}/>
             </View>
             <View>
-                <Pressable style = {styles.login_button} onPress = {() => {
-        navigation.navigate('RVLIB')}}>
-                    <Text style = {styles.logintext}>Sign In</Text>
+                <Pressable style = {styles.login_button} onPress = {handlePress}>
+                    <Text style = {styles.logintext}>Sign Up</Text>
                 </Pressable>
                 <Text style = {styles.url} onPress = {() => {
         navigation.navigate('Login')}}>Log In instead..</Text>
         <Pressable style = {styles.login_button2} >
-            <IconMat style = {{fontSize:23, marginLeft:-170, paddingRight:45}} name = {"google"} />
+            <IconMat style = {{fontSize:23, marginLeft:-170, paddingRight:45}} name = {"google"} onPress = {() => {
+        navigation.navigate('Reservations')}} />
                     <Text style = {styles.logintext2}>Sign Up with Google</Text>
                 </Pressable>
             </View>
@@ -63,7 +93,7 @@ const styles = StyleSheet.create({
     {
         fontSize:35,
         fontWeight:'700',
-        marginTop:-135,
+        marginTop:120,
         marginLeft:150
     },
     text2:
@@ -122,7 +152,7 @@ const styles = StyleSheet.create({
         letterSpacing: 0.25,
         color:'#000000',
         marginTop:50,
-        position:'absolute', marginLeft:75
+        position:'absolute', marginLeft:70
     },
     url:
     {

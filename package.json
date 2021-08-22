@@ -11,7 +11,12 @@
     "@react-native-firebase/app": "^12.7.1",
     "date-fns": "^2.22.1",
     "expo": "~42.0.0",
+    "expo-constants": "^11.0.1",
+    "expo-google-app-auth": "^8.2.2",
+    "expo-notifications": "~0.12.3",
+    "expo-permissions": "~12.1.1",
     "expo-status-bar": "~1.0.4",
+    "firebase": "8.2.3",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
@@ -19,13 +24,16 @@
     "react-native-common-date-picker": "^2.3.4",
     "react-native-dropdown-picker": "^5.1.21",
     "react-native-general-calendars": "^1.11.0",
+    "react-native-ratings": "^8.1.0",
     "react-native-snap-carousel": "^3.9.1",
+    "react-native-star-rating": "^1.1.0",
     "react-native-vector-icons": "^8.1.0",
     "react-native-web": "~0.13.12",
     "react-navigation": "^4.4.4",
     "react-navigation-drawer": "^2.7.1",
     "react-navigation-stack": "^2.10.4",
-    "react-nice-dates": "^3.1.0"
+    "react-nice-dates": "^3.1.0",
+    "expo-linking": "~2.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

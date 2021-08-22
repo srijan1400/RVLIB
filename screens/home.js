@@ -1,9 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { Component , state} from 'react';
+import React, { Component , state, useEffect} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, ImageBackground, Image, ScrollView,Button, Pressable,  Dimensions, useState } from 'react-native';
 import {FontAwesome5} from '@expo/vector-icons'
 import { Feather } from '@expo/vector-icons';
 import IconMat from 'react-native-vector-icons/MaterialCommunityIcons'
+import { loggingOut } from '../API/firebaseMethods';
+import firebase from 'firebase';
+import "firebase/auth";
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
+import { Constants } from 'expo-constants';
+
+
 
 const {width} = Dimensions.get('window');
 const height = width*100/60;
@@ -29,8 +37,82 @@ const reservationText = [
 ]
 
 
-const RVLIB = ({navigation}) =>
+export default function RVLIB({navigation})
 {
+
+  useEffect(() =>
+  {
+    (() => registerForPushNotificationsAsync())();
+  }, []);
+
+  const registerForPushNotificationsAsync = async() => {
+    let token;
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log(token);
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+
+    if(token)
+    {
+      const res = await firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).set((token), {merge:true});
+    }
+    
+  
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+  
+    return token;
+  };
+
+  //let currentUserUID = firebase.auth().currentUser.uid;
+
+
+  //useEffect(() => {
+    //async function getUserInfo()
+    //{
+     // let doc =  await firebase
+      //.firestore()
+      //.collection('users')
+      //.doc(currentUserUID)
+      //.get();
+
+     // if(!doc.exists)
+     // {
+      //  Alert.alert('No user data found !')
+     // }
+      //else
+      //{
+       // let dataObj = doc.data();
+      //  setEmail(dataObj.email)
+     // }
+   // }
+   // getUserInfo();
+  //})
+
+  const handlePress = () => 
+  {
+    loggingOut();
+    navigation.replace('Login')
+  };
+
   return(
     <View>
       {/*<View style = {styles.view}>
@@ -62,11 +144,11 @@ const RVLIB = ({navigation}) =>
         }
       </View>
       <View style = {{width:210, marginTop:60, marginLeft:110, color: '#7fffd4'}}>
-      <Pressable style={styles.button} onPress = {() => {
+      <Pressable style = {styles.login_button} onPress = {() => {
         navigation.navigate('Reservations')}}>
-      <IconMat style = {{fontSize:23 , color:'lightseagreen', marginLeft:-190}} name = {"bookshelf"}/>
-      <Text style={styles.text}>Your Reservations</Text>
-    </Pressable>
+      <IconMat style = {{fontSize:23 , color:'black', marginLeft:-190, paddingLeft:10}} name = {"bookshelf"}/>
+                    <Text style = {styles.logintext}>Your Reservations</Text>
+                </Pressable>
       </View>
       <View style = {{marginTop:-262, marginLeft:85}}>
         <Text style = {{fontSize:15, marginTop:-10}}>Civil Engineering 2020</Text>
@@ -81,8 +163,6 @@ const RVLIB = ({navigation}) =>
     </View>
   )
 }
-
-export default RVLIB;
 
 const styles = StyleSheet.create({
   header:{
@@ -173,5 +253,34 @@ const styles = StyleSheet.create({
     letterSpacing: 0.25,
     color:'#20b2aa', 
     position:'absolute'
-  }
+  },
+  login_button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 9,
+    elevation: 0,
+    backgroundColor: 'aquamarine',
+    width:220,
+    height:40,
+    borderColor:'#20b2aa',
+    borderWidth:1,
+    marginTop:-30,
+    elevation:5,
+    shadowRadius:5,
+    shadowColor:'#000000',
+    marginLeft:-25,
+    position : 'relative'
+},
+logintext:
+{
+    fontSize: 16,
+    lineHeight: 20,
+    fontWeight:'bold',
+    letterSpacing: 0.25,
+    color:'#000000',
+    marginTop:50,
+    position:'absolute', paddingLeft: 15
+}
 });

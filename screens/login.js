@@ -1,37 +1,53 @@
 import React from 'react'
 import { useState, setState} from 'react';
-import { View, Text, Button, Image, StyleSheet, ScrollView, Pressable, TouchableOpacity,  RecyclerViewBackedScrollView, Modal, TextInput, Linking} from 'react-native'
+import { View, Text, Button, Image, StyleSheet, ScrollView, Pressable, TouchableOpacity,  RecyclerViewBackedScrollView, Modal, TextInput, Linking, Alert} from 'react-native'
 import CalendarStrip from 'react-native-calendar-strip';
 import IconMat from 'react-native-vector-icons/AntDesign'
+import { signIn } from '../API/firebaseMethods';
 
 const Login = ({navigation}) =>
 {
-    
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handlePress = () => 
+    {
+        if(!email)
+        {
+            Alert.alert('Username field is empty!');
+        }
+
+        if(!password)
+        {
+            Alert.alert('Password field is empty!')
+        }
+
+        signIn(email, password);
+        setEmail('');
+        setPassword('');
+    };
 
     return(
         <View>
-             <Image style = {{width:70, height:100, marginTop:75, marginLeft:20}} source = {{uri : 'https://images.routledge.com/common/jackets/crclarge/978036764/9780367643782.jpg'}} />
-            <Image style = {{width:70, height:100, marginTop:-55, marginLeft:50}} source = {{uri : 'http://imshopping.rediff.com/imgchkbooks/200-300/books/pixs/05/9789380712505.jpg'}} />
-            <Image style = {{width:70, height:100, marginTop:-35, marginLeft:30}} source = {{uri : 'https://images-na.ssl-images-amazon.com/images/I/41HVEyYDVvL.jpg'}} />
             <Text style = {styles.text0}> RVLIB</Text>
             <View style = {styles.main}>
             
                 <Text style = {styles.text1}> Login</Text>
             </View>
             <View>
-                <Text style = {styles.text2}> Username</Text>
-                <TextInput style = {styles.input1} placeholder = "Enter username"/>
+                <Text style = {styles.text2}> Email</Text>
+                <TextInput style = {styles.input1} placeholder = "Enter email" onChangeText = {(email) => setEmail(email)}/>
                 <Text style = {styles.text2}> Password</Text>
-                <TextInput style = {styles.input2} placeholder = "Enter password" secureTextEntry = {true}/>
+                <TextInput style = {styles.input2} placeholder = "Enter password" secureTextEntry = {true} onChangeText = {(password) => setPassword(password)}/>
             </View>
             <View>
-                <Pressable style = {styles.login_button} onPress = {() => {
-        navigation.navigate('RVLIB')}} >
+                <Pressable style = {styles.login_button} onPress = {handlePress} >
                     <Text style = {styles.logintext}>Login</Text>
                 </Pressable>
                 <Text style = {styles.url} onPress = {() => {
         navigation.navigate('SignUp')}}>Sign Up Instead..</Text>
-        <Pressable style = {styles.login_button2} >
+        <Pressable style = {styles.login_button2} onPress = {() => {
+        navigation.navigate('Loading')}}>
             <IconMat style = {{fontSize:23, marginLeft:-170, paddingRight:35}} name = {"google"} />
                     <Text style = {styles.logintext}>Login with Google</Text>
                 </Pressable>
@@ -59,7 +75,7 @@ const styles = StyleSheet.create({
     {
         fontSize:35,
         fontWeight:'700',
-        marginTop:-140,
+        marginTop:120,
         marginLeft:150
     },
     text2:
